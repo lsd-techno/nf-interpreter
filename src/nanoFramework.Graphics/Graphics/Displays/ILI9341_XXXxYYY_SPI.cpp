@@ -99,10 +99,11 @@ bool DisplayDriver::Initialize()
     SetupDisplayAttributes();
 
     // Supposed to be this from the M5 Stack
-    //g_DisplayInterface.SendCommand(4, External_Command, 0xFF, 0x93, 0X42);
-    g_DisplayInterface.SendCommand(2, Power_Control_1, 0x0D); //GVDD 3.0V ~ 6.0V (0x03 ~ 0x3F) step 0.05V
+    // g_DisplayInterface.SendCommand(4, External_Command, 0xFF, 0x93, 0X42);
+    g_DisplayInterface.SendCommand(2, Power_Control_1, 0x0D); // GVDD 3.0V ~ 6.0V (0x03 ~ 0x3F) step 0.05V
     g_DisplayInterface.SendCommand(2, Power_Control_2, 0x03);
-    g_DisplayInterface.SendCommand(3, VCOM_Control_1, 0x70, 0x28);//+5.5V ~ -1.5V //default 0x31, 0x3C (+3.925 ~ -1.000V)
+    g_DisplayInterface
+        .SendCommand(3, VCOM_Control_1, 0x70, 0x28); //+5.5V ~ -1.5V //default 0x31, 0x3C (+3.925 ~ -1.000V)
     g_DisplayInterface.SendCommand(2, VCOM_Control_2, 0xC0);
     g_DisplayInterface.SendCommand(2, Interface_Signal_Control, 0xE0);
     g_DisplayInterface.SendCommand(4, Interface_Control, 0x01, 0x00, 0X00);
@@ -145,7 +146,13 @@ bool DisplayDriver::Initialize()
         0x33,
         0x0F);
         */
-    g_DisplayInterface.SendCommand(5, Display_Function_Control, 0x08, 0x82, (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height / 8) - 1), 0x04);
+    g_DisplayInterface.SendCommand(
+        5,
+        Display_Function_Control,
+        0x08,
+        0x82,
+        (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height / 8) - 1),
+        0x04);
     /*
     g_DisplayInterface.SendCommand(5, Column_Address_Set, 0x00, 0x00, 0x00, 0xEF); // Size = 239
     g_DisplayInterface.SendCommand(5, Page_Address_Set, 0x00, 0x00, 0x01, 0x3f);   // Size = 319
@@ -156,19 +163,17 @@ bool DisplayDriver::Initialize()
         (CLR_UINT8)(g_DisplayInterfaceConfig.Screen.x >> 8),
         (CLR_UINT8)(g_DisplayInterfaceConfig.Screen.x & 0xFF),
         (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.width - 1) >> 8),
-        (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.width - 1) & 0xFF)
-        ); // Size = 239
+        (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.width - 1) & 0xFF)); // Size = 239
     g_DisplayInterface.SendCommand(
         5,
         Page_Address_Set,
         (CLR_UINT8)(g_DisplayInterfaceConfig.Screen.y >> 8),
         (CLR_UINT8)(g_DisplayInterfaceConfig.Screen.y & 0xFF),
         (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height - 1) >> 8),
-        (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height - 1) & 0xFF)
-        ); // Size = 319
+        (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height - 1) & 0xFF)); // Size = 319
 
-    //g_DisplayInterface.SendCommand(1, Memory_Write);
-    //g_DisplayInterface.SendCommand(1, Invert_On);
+    // g_DisplayInterface.SendCommand(1, Memory_Write);
+    // g_DisplayInterface.SendCommand(1, Invert_On);
 
     g_DisplayInterface.SendCommand(1, Sleep_Out);
     OS_DELAY(20); // Send Sleep Out command to display : no parameter
@@ -185,7 +190,7 @@ bool DisplayDriver::Initialize()
 void DisplayDriver::SetupDisplayAttributes()
 {
     // Define the LCD/TFT resolution
-    if(g_DisplayInterfaceConfig.Screen.width > g_DisplayInterfaceConfig.Screen.height)
+    if (g_DisplayInterfaceConfig.Screen.width > g_DisplayInterfaceConfig.Screen.height)
     {
         Attributes.LongerSide = g_DisplayInterfaceConfig.Screen.width;
         Attributes.ShorterSide = g_DisplayInterfaceConfig.Screen.height;
@@ -201,15 +206,15 @@ void DisplayDriver::SetupDisplayAttributes()
     return;
 }
 
-//display rotation definitions
-#define dmac_PORTRAIT000 (MADCTL_MX)
-#define dmac_PORTRAIT180 (MADCTL_MY)
+// display rotation definitions
+#define dmac_PORTRAIT000  (MADCTL_MX)
+#define dmac_PORTRAIT180  (MADCTL_MY)
 #define dmac_LANDSCAPE000 (MADCTL_MV)
 #define dmac_LANDSCAPE180 (MADCTL_MV | MADCTL_MX | MADCTL_MY)
 bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
 {
     CLR_UINT8 dMAC = MADCTL_BGR;
-    //define logic resolution
+    // define logic resolution
     switch (orientation)
     {
         case PORTRAIT:
@@ -224,7 +229,7 @@ bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
             break;
     }
 
-    //set physical resolution
+    // set physical resolution
     switch (orientation)
     {
         case PORTRAIT:
@@ -249,7 +254,7 @@ bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
 
 void DisplayDriver::SetDefaultOrientation()
 {
-    //ChangeOrientation(LANDSCAPE);
+    // ChangeOrientation(LANDSCAPE);
     ChangeOrientation(LANDSCAPE180);
 }
 
