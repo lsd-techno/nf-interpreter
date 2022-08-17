@@ -213,11 +213,11 @@ HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_DisplayControl::
         backgroundColor = stack.Arg7().NumericByRef().u4;
 
         // Prepare all the elements for the colors
-        //GFX_Pen pen;
+        // GFX_Pen pen;
         GFX_Brush brush;
         GFX_Rect rectangle;
-        //pen.color = backgroundColor;
-        //pen.thickness = 0;
+        // pen.color = backgroundColor;
+        // pen.thickness = 0;
         brush.gradientStartColor = backgroundColor;
         brush.gradientEndColor = backgroundColor;
         rectangle.left = 0;
@@ -289,17 +289,17 @@ HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_DisplayControl::
                 if (chr.isValid)
                 {
                     widthChar = chr.width;
-                    //calculate character max height for current line
-                    //seems better to use font height
+                    // calculate character max height for current line
+                    // seems better to use font height
 
                     // set X position using previous char's width
                     posX += prevCharWidth;
                     if (posX + bm.m_width > width)
                     {
-                        //go to next line
+                        // go to next line
                         posX = x;
-                        posY += heightChar;//add max character height of current line
-                        //heightChar=0;//reset character height (will get new max height for next line)
+                        posY += heightChar; // add max character height of current line
+                        // heightChar=0;//reset character height (will get new max height for next line)
                     }
 
                     // If there is a background, will fill the bitmap with it
@@ -307,9 +307,9 @@ HRESULT Library_nanoFramework_Graphics_nanoFramework_UI_DisplayControl::
                     {
                         rectangle.right = bm.m_width;
                         rectangle.bottom = bm.m_height;
-                        //change bitmap->DrawRectangle(pen, brush, rectangle);
-                        //to FillRectangle (this function little bit faster than DrawRectangle)
-                        //In the future I plan to improve it too
+                        // change bitmap->DrawRectangle(pen, brush, rectangle);
+                        // to FillRectangle (this function little bit faster than DrawRectangle)
+                        // In the future I plan to improve it too
                         bitmap->FillRectangle(brush, rectangle);
                     }
                     else

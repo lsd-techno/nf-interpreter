@@ -634,10 +634,7 @@ struct GraphicsDriver
         const GFX_Pen &pen,
         const GFX_Brush &brush,
         const GFX_Rect &rectangle);
-    static void FillRectangle(
-        const PAL_GFX_Bitmap &bitmap,
-        const GFX_Brush &brush,
-        const GFX_Rect &rectangle);
+    static void FillRectangle(const PAL_GFX_Bitmap &bitmap, const GFX_Brush &brush, const GFX_Rect &rectangle);
     static void DrawRoundedRectangle(
         const PAL_GFX_Bitmap &bitmap,
         const GFX_Pen &pen,
