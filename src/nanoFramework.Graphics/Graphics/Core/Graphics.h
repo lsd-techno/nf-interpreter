@@ -497,6 +497,7 @@ struct CLR_GFX_Bitmap
 
     void DrawLine(const GFX_Pen &pen, int x0, int y0, int x1, int y1);
     void DrawRectangle(const GFX_Pen &pen, const GFX_Brush &brush, const GFX_Rect &rectangle);
+    void FillRectangle(const GFX_Brush &brush, const GFX_Rect &rectangle);
     void DrawRoundedRectangle(
         const GFX_Pen &pen,
         const GFX_Brush &brush,
@@ -620,7 +621,7 @@ struct GraphicsDriver
     static int GetHeight();
     static int GetBitsPerPixel();
     static DisplayOrientation GetOrientation();
-    static void ChangeOrientation(DisplayOrientation newOrientation);
+    static bool ChangeOrientation(DisplayOrientation newOrientation);
 
     static void Clear(const PAL_GFX_Bitmap &bitmap);
 
@@ -631,6 +632,10 @@ struct GraphicsDriver
     static void DrawRectangle(
         const PAL_GFX_Bitmap &bitmap,
         const GFX_Pen &pen,
+        const GFX_Brush &brush,
+        const GFX_Rect &rectangle);
+    static void FillRectangle(
+        const PAL_GFX_Bitmap &bitmap,
         const GFX_Brush &brush,
         const GFX_Rect &rectangle);
     static void DrawRoundedRectangle(

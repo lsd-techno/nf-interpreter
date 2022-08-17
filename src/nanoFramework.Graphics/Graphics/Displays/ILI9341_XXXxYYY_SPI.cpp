@@ -1,3 +1,5 @@
+// This driver improves diplay support, corrects initialization for different physical display size
+// Update orientation switch and ability to switch orientation after initialization from managed code
 //
 // Copyright (c) .NET Foundation and Contributors
 // Portions Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -99,11 +101,11 @@ bool DisplayDriver::Initialize()
     SetupDisplayAttributes();
 
     // Supposed to be this from the M5 Stack
-    //g_DisplayInterface.SendCommand(4, External_Command, 0xFF, 0x93, 0X42);
-    g_DisplayInterface.SendCommand(2, Power_Control_1, 0x0D); //GVDD 3.0V ~ 6.0V (0x03 ~ 0x3F) step 0.05V
-    g_DisplayInterface.SendCommand(2, Power_Control_2, 0x03);
-    g_DisplayInterface.SendCommand(3, VCOM_Control_1, 0x70, 0x28);//+5.5V ~ -1.5V //default 0x31, 0x3C (+3.925 ~ -1.000V)
-    g_DisplayInterface.SendCommand(2, VCOM_Control_2, 0xC0);
+    //g_DisplayInterface.SendCommand(4, External_Command, 0xFF, 0x93, 0X42); //this command no need for ILI9341
+    //g_DisplayInterface.SendCommand(2, Power_Control_1, 0x0D); //GVDD 3.0V ~ 6.0V (0x03 ~ 0x3F) step 0.05V
+    //g_DisplayInterface.SendCommand(2, Power_Control_2, 0x03);
+    //g_DisplayInterface.SendCommand(3, VCOM_Control_1, 0x70, 0x28);//+5.5V ~ -1.5V //default 0x31, 0x3C (+3.925 ~ -1.000V)
+    //g_DisplayInterface.SendCommand(2, VCOM_Control_2, 0xC0);
     g_DisplayInterface.SendCommand(2, Interface_Signal_Control, 0xE0);
     g_DisplayInterface.SendCommand(4, Interface_Control, 0x01, 0x00, 0X00);
     g_DisplayInterface.SendCommand(2, Pixel_Format_Set, 0x55); // 0x55 -> 16 bit
@@ -145,11 +147,13 @@ bool DisplayDriver::Initialize()
         0x33,
         0x0F);
         */
+    //set display phisical size/parameters
     g_DisplayInterface.SendCommand(5, Display_Function_Control, 0x08, 0x82, (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height / 8) - 1), 0x04);
     /*
     g_DisplayInterface.SendCommand(5, Column_Address_Set, 0x00, 0x00, 0x00, 0xEF); // Size = 239
     g_DisplayInterface.SendCommand(5, Page_Address_Set, 0x00, 0x00, 0x01, 0x3f);   // Size = 319
     */
+    //set display logical size/parameters
     g_DisplayInterface.SendCommand(
         5,
         Column_Address_Set,
@@ -244,13 +248,16 @@ bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
     OS_DELAY(20);                           // Send Sleep Out command to display : no parameter
 
     g_DisplayInterface.SendCommand(2, Memory_Access_Control, dMAC); // Set memory access mode
+    OS_DELAY(20);                           // Send Sleep Out command to display : no parameter
+    g_DisplayInterface.SendCommand(1, Memory_Write);
+    OS_DELAY(20);                           // Send Sleep Out command to display : no parameter
     return true;
 }
 
 void DisplayDriver::SetDefaultOrientation()
 {
     //ChangeOrientation(LANDSCAPE);
-    ChangeOrientation(LANDSCAPE180);
+    ChangeOrientation(PORTRAIT);
 }
 
 bool DisplayDriver::Uninitialize()
