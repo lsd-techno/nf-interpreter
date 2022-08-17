@@ -102,11 +102,11 @@ bool DisplayDriver::Initialize()
 
     // Supposed to be this from the M5 Stack
     // Use display manufacturer defaults to not damage display by incorrect voltage selection
-    //g_DisplayInterface.SendCommand(4, External_Command, 0xFF, 0x93, 0X42); //this command no need for ILI9341
-    //g_DisplayInterface.SendCommand(2, Power_Control_1, 0x0D); //GVDD 3.0V ~ 6.0V (0x03 ~ 0x3F) step 0.05V
-    //g_DisplayInterface.SendCommand(2, Power_Control_2, 0x03);
-    //g_DisplayInterface.SendCommand(3, VCOM_Control_1, 0x70, 0x28);//+5.5V ~ -1.5V //default 0x31, 0x3C (+3.925 ~ -1.000V)
-    //g_DisplayInterface.SendCommand(2, VCOM_Control_2, 0xC0);
+    // g_DisplayInterface.SendCommand(4, External_Command, 0xFF, 0x93, 0X42); //this command no need for ILI9341
+    // g_DisplayInterface.SendCommand(2, Power_Control_1, 0x0D); //GVDD 3.0V ~ 6.0V (0x03 ~ 0x3F) step 0.05V
+    // g_DisplayInterface.SendCommand(2, Power_Control_2, 0x03);
+    // g_DisplayInterface.SendCommand(3, VCOM_Control_1, 0x70, 0x28);//+5.5V ~ -1.5V //default 0x31, 0x3C (+3.925 ~
+    // -1.000V) g_DisplayInterface.SendCommand(2, VCOM_Control_2, 0xC0);
     g_DisplayInterface.SendCommand(2, Interface_Signal_Control, 0xE0);
     g_DisplayInterface.SendCommand(4, Interface_Control, 0x01, 0x00, 0X00);
     g_DisplayInterface.SendCommand(2, Pixel_Format_Set, 0x55); // 0x55 -> 16 bit
@@ -148,7 +148,7 @@ bool DisplayDriver::Initialize()
         0x33,
         0x0F);
         */
-    //set display phisical size/parameters
+    // set display phisical size/parameters
     g_DisplayInterface.SendCommand(
         5,
         Display_Function_Control,
@@ -157,7 +157,7 @@ bool DisplayDriver::Initialize()
         (CLR_UINT8)((g_DisplayInterfaceConfig.Screen.height / 8) - 1),
         0x04);
 
-    //set display logical size/parameters
+    // set display logical size/parameters
     g_DisplayInterface.SendCommand(
         5,
         Column_Address_Set,
@@ -250,9 +250,9 @@ bool DisplayDriver::ChangeOrientation(DisplayOrientation orientation)
     OS_DELAY(20);                           // Send Sleep Out command to display : no parameter
 
     g_DisplayInterface.SendCommand(2, Memory_Access_Control, dMAC); // Set memory access mode
-    OS_DELAY(20);                           // Send Sleep Out command to display : no parameter
+    OS_DELAY(20);                                                   // Send Sleep Out command to display : no parameter
     g_DisplayInterface.SendCommand(1, Memory_Write);
-    OS_DELAY(20);                           // Send Sleep Out command to display : no parameter
+    OS_DELAY(20); // Send Sleep Out command to display : no parameter
     return true;
 }
 

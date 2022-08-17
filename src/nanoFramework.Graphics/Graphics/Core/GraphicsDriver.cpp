@@ -102,10 +102,7 @@ void GraphicsDriver::DrawRectangle(
     DrawRectangleNative(bitmap, nativePen, nativeBrush, rectangle);
 }
 
-void GraphicsDriver::FillRectangle(
-    const PAL_GFX_Bitmap &bitmap,
-    const GFX_Brush &brush,
-    const GFX_Rect &rectangle)
+void GraphicsDriver::FillRectangle(const PAL_GFX_Bitmap &bitmap, const GFX_Brush &brush, const GFX_Rect &rectangle)
 {
     GFX_Brush nativeBrush = ConvertBrushToNative(brush);
     FillRectangleNative(bitmap, nativeBrush, rectangle);
